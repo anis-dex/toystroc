@@ -1,0 +1,57 @@
+version: "2"
+
+services:
+  database:
+    image: mysql:5.7
+    container_name: toytroc_database
+    env_file: ./docker/mysql/.env
+    ports:
+      - "3307:3306"
+    volumes:
+      - "data-toytroc-mysql:/var/lib/mysql"
+      - "./docker/mysql/conf.d/docker.cnf:/etc/mysql/conf.d/docker.cnf"
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: toytroc_jenkins
+    user: jenkins
+    command: bash -c "apt-get update && apt-get install -y maven"
+    volumes:
+      - "data-toytroc-jenkins:/var/jenkins_home"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      JENKINS_HOST_HOME: "/data/jenkins"
+    ports:
+      - "7001:8080"
+    links:
+      - tomcat
+
+  tomcat:
+    image: bitnami/tomcat:latest
+    container_name: toytroc_tomcat
+    # Environment variables do not appear to be getting loaded the first time Tomcat starts!
+    environment:
+      - TOMCAT_USERNAME=admin
+      - TOMCAT_PASSWORD=admin
+    ports:
+      - "8085:8080"
+    volumes:
+      - data-toytroc-tomcat:/bitnami/tomcat
+    links:
+      - database
+
+
+# Volumes definition
+#
+volumes:
+  data-toytroc-mysql:
+    driver: local
+  data-toytroc-jenkins:
+    driver: local
+  data-toytroc-tomcat:
+    driver: local  
+
+networks:
+  default:
+    external:
+      name: toytroc_network

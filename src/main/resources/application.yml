@@ -1,0 +1,28 @@
+spring:
+  jmx:
+    enabled: false
+  jackson:
+    time-zone: Europe/Paris
+    locale: fr_FR
+  datasource:
+    url: jdbc:mysql://172.19.0.1:3307/toytroc
+    username: root
+    password: root
+    driverClassName: com.mysql.jdbc.Driver
+    #platform: h2
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: false
+        format_sql: false
+    flyway:
+      enabled: false
+      baseline-on-migrate: false
+      out-of-order: false
+
+server:
+  port: 9095
