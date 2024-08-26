@@ -20,7 +20,7 @@
 		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<springfox-version>2.7.0</springfox-version>
+		<springfox-version>2.10.0</springfox-version>
 
 	</properties>
 
